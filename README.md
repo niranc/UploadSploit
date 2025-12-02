@@ -170,4 +170,3 @@ This tool is intended for authorized security testing only. Only use UploadSploi
 
 This project is provided as-is for educational and authorized security testing purposes.
 
-# UploadSploit

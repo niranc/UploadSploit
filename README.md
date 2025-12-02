@@ -66,71 +66,38 @@ UploadSploit is a Burp Suite extension designed to automatically test and exploi
 - **Progress Label**: Shows scan progress (e.g., "Scan : 50 / 200") and RCE status
 - **RCE FOUND Panel**: Appears at the bottom when RCE is detected, with a replay button
 
-## Testing with Docker
+## Testing with vuln-app
 
-This repository includes vulnerable applications for testing UploadSploit. Here's how to set up and test with the PHP application:
+This repository includes vulnerable applications for testing UploadSploit.
 
-### PHP Application Setup
-
-1. **Create a Dockerfile for PHP** (if not present):
-
-```dockerfile
-FROM php:7.4-apache
-
-WORKDIR /var/www/html
-
-COPY . /var/www/html/
-
-RUN chmod -R 777 /var/www/html/uploads
-
-EXPOSE 80
-```
-
-2. **Build and Run the Container**:
-
-```bash
-cd vuln-app/php
-docker build -t uploadsploit-php .
-docker run -d -p 8080:80 --name uploadsploit-php uploadsploit-php
-```
-
-3. **Access the Application**:
-   - Open your browser and navigate to `http://localhost:8080`
-   - You should see the PHP vulnerable upload page
-
-### Testing RCE with UploadSploit
-
-1. **Configure Burp Suite**:
-   - Set Burp Suite Proxy to listen on `127.0.0.1:8080`
-   - Configure your browser to use Burp Suite as a proxy
-
-2. **Upload a Legitimate Image**:
-   - Go to `http://localhost:8080`
-   - Select a JPG, PNG, or GIF image file
-   - Click Upload
-   - The request should be intercepted in Burp Suite Proxy
-
-3. **Use UploadSploit**:
-   - Right-click on the intercepted request
-   - Select **"Envoyer vers UploadSploit"**
-   - In the UploadSploit tab, click **Start**
-   - Wait for the scan to complete
-
-4. **Verify RCE**:
-   - If RCE is found, the tab will turn red and show "RCE FOUND"
-   - Check the Repeater tab for the successful exploit request
-   - The uploaded PHP file should be accessible and executable
-
-### Alternative: Quick PHP Test Server
-
-If you prefer not to use Docker, you can use PHP's built-in server:
+### PHP Application
 
 ```bash
 cd vuln-app/php
 php -S localhost:8080
 ```
 
-Then follow the same testing steps above.
+Access the application at `http://localhost:8080`
+
+### JSP Application
+
+```bash
+cd vuln-app/jsp
+docker build -t uploadsploit-jsp .
+docker run -d -p 8080:8080 --name uploadsploit-jsp uploadsploit-jsp
+```
+
+Access the application at `http://localhost:8080/vuln-jsp/upload.jsp`
+
+### ASPX Application
+
+```bash
+cd vuln-app/aspx
+docker build -t uploadsploit-aspx .
+docker run -d -p 8081:8081 --name uploadsploit-aspx uploadsploit-aspx
+```
+
+Access the application at `http://localhost:8081/Default.aspx`
 
 ## Supported Techniques
 
